@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  #app {
+    @apply h-screen bg-sky-100;
+  }
+}
+@layer utilities {
+  .form-title {
+    @apply text-center text-2xl font-bold text-gray-700;
+  }
+  .form {
+    @apply mx-auto my-4 space-y-3 rounded bg-white px-8 pt-6 pb-8 shadow-md;
+  }
+  .form input {
+    @apply w-full rounded border border-gray-400 bg-gray-100 py-2 px-4 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none;
+  }
+  .form button {
+    @apply w-full rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 focus:outline-none;
+  }
+  /* .form div {
+    @apply min-w-[150px];
+  } */
+  .form span {
+    @apply text-sm text-red-500;
+  }
+}
