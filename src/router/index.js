@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import Test from "../views/Test.vue";
+import Unprotected from "../views/Unprotected.vue";
 import Dashboard from "../views/Dashboard.vue";
+import Protected from "../views/Protected.vue";
 import Auth from "../views/Auth.vue";
 import auth from "../middleware/auth";
 import log from "../middleware/log";
@@ -14,17 +15,27 @@ const router = createRouter({
       name: "home",
       component: Home,
       meta: {
-        title: "Home",
+        title: "Welcome",
         middleware: log,
       },
     },
     {
-      path: "/test",
-      name: "test",
-      component: Test,
+      path: "/unprotected",
+      name: "unprotected",
+      component: Unprotected,
       meta: {
-        title: "Home",
+        title: "Unprotected Page",
         middleware: log,
+      },
+    },
+    {
+      path: "/protected",
+      name: "protected",
+      component: Protected,
+      meta: {
+        title: "Protected Page",
+        middleware: auth,
+        log,
       },
     },
     {
@@ -32,7 +43,7 @@ const router = createRouter({
       name: "dashboard",
       component: Dashboard,
       meta: {
-        title: "Home",
+        title: "Dashboard",
         middleware: auth,
       },
     },
@@ -41,7 +52,7 @@ const router = createRouter({
       name: "auth",
       component: Auth,
       meta: {
-        title: "Login",
+        title: "Login / Register",
       },
     },
     { path: "/:pathMatch(.*)", component: NotFound },

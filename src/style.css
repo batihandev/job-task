@@ -4,7 +4,7 @@
 
 @layer base {
   #app {
-    @apply h-screen bg-sky-100;
+    @apply h-screen bg-sky-100 pb-14;
   }
 }
 @layer utilities {

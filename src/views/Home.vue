@@ -32,13 +32,6 @@ const Auth = (value) => {
       class="flex flex-col items-center justify-center space-y-4 py-5"
     >
       <h1 class="form-title">Welcome {{ store.user.name }}</h1>
-      <button
-        class="rounded bg-red-500 py-2 px-4 font-bold text-white hover:bg-red-700"
-        @click="store.logOut"
-      >
-        Logout
-      </button>
-      <button><router-link to="/test">Register</router-link></button>
     </div>
   </main>
 </template>
