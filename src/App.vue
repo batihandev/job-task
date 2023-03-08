@@ -6,7 +6,6 @@ import { useAuthStore } from "./store";
 const store = useAuthStore();
 if (!store.authenticated) {
   store.checkUser();
-  console.log("checking user", store.authenticated);
 }
 </script>
 

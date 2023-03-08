@@ -78,9 +78,20 @@
         </Menu>
       </div>
       <div v-else>
-        <router-link class="text-xl font-semibold text-white" to="/login"
-          >Login</router-link
-        >
+        <Transition name="link" mode="out-in">
+          <router-link
+            v-if="route.params.value === 'login'"
+            class="block w-[76px] text-xl font-semibold text-white"
+            to="/register"
+            >Sign Up</router-link
+          >
+          <router-link
+            v-else
+            class="block w-[76px] text-xl font-semibold text-white"
+            to="/login"
+            >Login</router-link
+          >
+        </Transition>
       </div>
     </nav>
   </header>
@@ -89,8 +100,20 @@
 <script setup>
 import { useAuthStore } from "../store";
 import { RouterLink } from "vue-router";
-import { ChevronDownIcon } from "@heroicons/vue/solid";
-
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { ChevronDownIcon } from "@heroicons/vue/solid";
+import { useRoute } from "vue-router";
+const route = useRoute();
+
 const store = useAuthStore();
 </script>
+<style>
+.link-enter-active,
+.link-leave-active {
+  transition: 200ms ease all;
+}
+.link-enter-from,
+.link-leave-to {
+  opacity: 0.1;
+}
+</style>

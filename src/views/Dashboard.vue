@@ -5,7 +5,6 @@ import { CheckCircleIcon } from "@heroicons/vue/outline";
 import { useValidateStore } from "../store";
 import { ref } from "vue";
 const store = useAuthStore();
-const inputRef = ref(null);
 const validateStore = useValidateStore();
 const editing = ref(false);
 const keyRemmember = ref("");
@@ -29,6 +28,7 @@ const initialStoreMatch = () => {
 };
 initialStoreMatch();
 const inputEnable = (key) => {
+  cancelChanges();
   if (editing.value) return;
   keyRemmember.value = key;
 
@@ -55,20 +55,12 @@ const confrimChange = () => {
   editing.value = false;
 
   keyRemmember.value = "";
-  console.log(keyRemmember);
 
   store.editUser(store.user);
   userref.value = JSON.parse(localStorage.getItem("user"));
 };
 const onChange = () => {
   const key = keyRemmember.value;
-  console.log(validateStore.errors[key]);
-  console.log(
-    validateStore.errors.confirmPassword,
-    "confirmpassword",
-    validateStore.confirmPassword,
-    key
-  );
   syncUserDetails(key);
 };
 const cancelChanges = () => {
@@ -82,10 +74,8 @@ const cancelChanges = () => {
 export default {
   methods: {
     focusInput(key) {
-      console.log(this.$refs, key);
       this.$refs[key][0].focus();
       this.$refs[key][0].select();
-      console.log(this.$refs[key]);
     },
   },
 };
@@ -112,7 +102,7 @@ export default {
                 :class="key === keyRemmember ? 'hidden' : 'block'"
               >
                 <PencilAltIcon
-                  @click="inputEnable(key), focusInput.bind(this, key)()"
+                  @click="focusInput(key), inputEnable(key)"
                   class="absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-red-400 transition-colors duration-200 hover:text-red-800"
                 />
               </div>
@@ -137,10 +127,10 @@ export default {
                   key !== 'token' &&
                   key !== 'confirmpassword'
                 "
-                class="border-b border-sky-300 p-2 text-lg"
+                class="border-b border-sky-300 p-2 text-lg outline-none ring-2 ring-transparent"
                 :class="
                   key === keyRemmember
-                    ? 'rounded border border-blue-500 border-opacity-25 bg-red-300  bg-opacity-50'
+                    ? 'rounded  border-blue-500 border-opacity-25 bg-blue-300 bg-opacity-50 ring-2  ring-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'
                     : 'pointer-events-none cursor-none  bg-transparent'
                 "
                 type="text"
@@ -150,10 +140,10 @@ export default {
                 :ref="key"
                 @input="onChange(key)"
                 v-else
-                class="border border-b border-transparent border-b-sky-300 p-2 text-lg"
+                class="border border-b border-transparent border-b-sky-300 p-2 text-lg outline-none ring-2 ring-transparent"
                 :class="
                   key === keyRemmember || key === 'confirmpassword'
-                    ? 'rounded border border-blue-500 border-opacity-25 bg-red-300 bg-opacity-50'
+                    ? 'rounded border-blue-500 border-opacity-25 bg-blue-300 bg-opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'
                     : 'pointer-events-none cursor-none  bg-transparent'
                 "
                 type="password"

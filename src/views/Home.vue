@@ -5,7 +5,6 @@ const store = useAuthStore();
 const router = useRouter();
 
 const Auth = (value) => {
-  console.log(value);
   let param = "login";
   if (value === "SignUp") {
     param = "register";
