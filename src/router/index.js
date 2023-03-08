@@ -5,6 +5,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Auth from "../views/Auth.vue";
 import auth from "../middleware/auth";
 import log from "../middleware/log";
+import NotFound from "../views/NotFound.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -43,6 +44,7 @@ const router = createRouter({
         title: "Login",
       },
     },
+    { path: "/:pathMatch(.*)", component: NotFound },
   ],
 });
 
