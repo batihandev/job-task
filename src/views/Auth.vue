@@ -26,7 +26,7 @@
         </div>
       </form>
     </div>
-    <div v-else>
+    <div v-if="route.params.value === 'register'">
       <h1 class="form-title">Sign Up</h1>
       <form @submit="store.signup" class="form" novalidate>
         <div class="field">
@@ -73,6 +73,9 @@
         </div>
       </form>
     </div>
+    <div v-else>
+      <NotFound />
+    </div>
   </div>
 </template>
 
@@ -80,6 +83,7 @@
 import { useRoute } from "vue-router";
 import { useSignupStore } from "../store";
 import { useAuthStore } from "../store";
+import NotFound from "./NotFound.vue";
 const authStore = useAuthStore();
 const store = useSignupStore();
 const route = useRoute();
