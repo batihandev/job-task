@@ -13,9 +13,20 @@ if (!store.authenticated) {
 <template>
   <Header />
   <RouterView v-slot="{ Component }">
-    <component :is="Component" />
+    <Transition name="page" mode="out-in">
+      <component :is="Component" />
+    </Transition>
   </RouterView>
   <Footer />
 </template>
 
-<style scoped></style>
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: 300ms ease all;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+</style>

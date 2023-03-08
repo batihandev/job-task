@@ -1,26 +1,38 @@
 <template>
-  <header class="sticky top-0 bg-slate-600 py-4 shadow-lg">
+  <header class="sticky top-0 z-10 bg-slate-600 py-4 shadow-lg">
     <nav class="container flex flex-1 items-center justify-between">
-      <RouterLink :to="{ name: 'home' }" class="text-xl font-bold text-white"
+      <RouterLink
+        :to="{ name: 'home' }"
+        class="text-xl font-bold text-white hover:opacity-80"
         >Home</RouterLink
       >
       <div
         class="hidden items-center justify-evenly gap-4 text-lg text-white sm:flex"
       >
-        <RouterLink :to="{ name: 'protected' }">Protected</RouterLink>
-        <RouterLink :to="{ name: 'unprotected' }">Unprotected</RouterLink>
         <RouterLink
-          v-if="store.authenticated === true"
-          :to="{ name: 'dashboard' }"
-          >Dashboard</RouterLink
+          :to="{ name: 'protected' }"
+          class="transition-opacity duration-300 hover:opacity-80"
+          >Protected</RouterLink
+        >
+        <RouterLink
+          :to="{ name: 'unprotected' }"
+          class="transition-opacity duration-300 hover:opacity-80"
+          >Unprotected</RouterLink
         >
       </div>
-      <div class="sm:hidden">
+      <div v-if="store.authenticated" class="z-10">
         <Menu>
           <div class="relative">
-            <MenuButton class="text-xl font-semibold text-white"
-              >More</MenuButton
+            <MenuButton
+              class="flex items-center justify-center text-xl font-semibold text-white transition-opacity duration-300 hover:opacity-80"
             >
+              <div>
+                {{ store.user.username
+                }}<ChevronDownIcon
+                  class="absolute right-0 bottom-0 h-6 w-6 translate-x-full"
+                />
+              </div>
+            </MenuButton>
             <Transition
               enter-active-class="transition duration-100 ease-out"
               enter-from-class="transform scale-95 opacity-0"
@@ -30,34 +42,46 @@
               leave-to-class="transform scale-95 opacity-0"
             >
               <MenuItems
-                class="absolute top-[calc(100%+16px)] -right-7 flex flex-col space-y-3 rounded-md bg-gray-100 p-3 shadow-lg"
+                class="menu-hovers absolute top-[calc(100%+16px)] -right-[20px] z-10 flex min-w-[150px] flex-col rounded-b-md bg-gray-100 py-3 px-5 text-right shadow-lg"
               >
-                <MenuItem v-slot="{ active }">
+                <MenuItem class="border-b border-gray-300 pb-2">
+                  <div class="font-semibold">
+                    Hi , {{ store.user.name }} {{ store.user.surname }}
+                  </div>
+                </MenuItem>
+                <MenuItem class="w-full" v-slot="{ active }">
+                  <RouterLink :to="{ name: 'dashboard' }">Dashboard</RouterLink>
+                </MenuItem>
+                <MenuItem class="block w-full sm:hidden" v-slot="{ active }">
                   <RouterLink :to="{ name: 'protected' }">Protected</RouterLink>
                 </MenuItem>
-                <MenuItem v-slot="{ active }">
+                <MenuItem
+                  class="block w-full border-b border-gray-300 pb-2 sm:hidden"
+                  v-slot="{ active }"
+                >
                   <RouterLink :to="{ name: 'unprotected' }"
                     >Unprotected</RouterLink
                   >
                 </MenuItem>
-                <MenuItem
-                  v-if="store.authenticated === true"
-                  v-slot="{ active }"
-                >
-                  <RouterLink :to="{ name: 'dashboard' }">Dashboard</RouterLink>
+
+                <MenuItem class="">
+                  <button
+                    class="tranisiton-colors mt-3 rounded bg-red-300 py-1 px-2 font-bold text-white duration-300 hover:bg-red-500"
+                    @click="store.logOut"
+                  >
+                    Logout
+                  </button>
                 </MenuItem>
               </MenuItems>
             </Transition>
           </div>
         </Menu>
       </div>
-      <button
-        v-if="store.authenticated === true"
-        class="rounded bg-red-500 py-2 px-4 font-bold text-white hover:bg-red-700"
-        @click="store.logOut"
-      >
-        Logout
-      </button>
+      <div v-else>
+        <router-link class="text-xl font-semibold text-white" to="/login"
+          >Login</router-link
+        >
+      </div>
     </nav>
   </header>
 </template>
@@ -65,6 +89,8 @@
 <script setup>
 import { useAuthStore } from "../store";
 import { RouterLink } from "vue-router";
+import { ChevronDownIcon } from "@heroicons/vue/solid";
+
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 const store = useAuthStore();
 </script>

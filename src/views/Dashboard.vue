@@ -8,6 +8,7 @@ const store = useAuthStore();
 const validateStore = useValidateStore();
 const editing = ref(false);
 const keyRemmember = ref("");
+const userref = ref(JSON.parse(localStorage.getItem("user")));
 const syncUserDetails = (key) => {
   if (key === "password") {
     validateStore.confirmPassword = store.user.confirmpassword;
@@ -56,6 +57,7 @@ const confrimChange = () => {
   console.log(keyRemmember);
 
   store.editUser(store.user);
+  userref.value = JSON.parse(localStorage.getItem("user"));
 };
 const onChange = () => {
   const key = keyRemmember.value;
@@ -79,7 +81,7 @@ const cancelChanges = () => {
 <template>
   <main class="flex flex-col items-center justify-center">
     <h1 class="form-title py-5">
-      Welcome {{ store.user.name }} {{ store.user.surname }}
+      Welcome {{ userref.username }}, {{ userref.name }} {{ userref.surname }}
     </h1>
     <form @submit.prevent class="flex flex-col items-center justify-center">
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -96,7 +98,7 @@ const cancelChanges = () => {
               >
                 <PencilAltIcon
                   @click="inputEnable(key)"
-                  class="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+                  class="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-400 transition-colors duration-200 hover:text-gray-800"
                 />
               </div>
               <div
@@ -106,7 +108,7 @@ const cancelChanges = () => {
               >
                 <CheckCircleIcon
                   @click="confrimChange()"
-                  class="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 text-green-600 text-gray-400"
+                  class="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-green-600 transition-colors duration-200 hover:text-green-800"
                 />
               </div>
             </label>
@@ -119,11 +121,11 @@ const cancelChanges = () => {
                   key !== 'token' &&
                   key !== 'confirmpassword'
                 "
-                class="mr-4 mb-2 rounded px-1"
+                class="mr-4 mb-2 rounded text-lg"
                 :class="
                   key === keyRemmember
-                    ? 'border border-blue-500 border-opacity-25 bg-red-300 bg-opacity-40'
-                    : 'pointer-events-none cursor-none border border-transparent bg-transparent opacity-50'
+                    ? 'border border-blue-500 border-opacity-25 bg-red-300  '
+                    : 'pointer-events-none cursor-none border border-transparent bg-transparent'
                 "
                 type="text"
                 v-model="store.user[key]"
@@ -131,11 +133,11 @@ const cancelChanges = () => {
               <input
                 @input="onChange(key)"
                 v-else
-                class="mr-4 rounded px-1"
+                class="mr-4 rounded text-lg"
                 :class="
                   key === keyRemmember || key === 'confirmpassword'
                     ? 'border border-blue-500 border-opacity-25 bg-red-300 bg-opacity-40'
-                    : 'pointer-events-none cursor-none border border-transparent bg-transparent opacity-50'
+                    : 'pointer-events-none cursor-none border border-transparent bg-transparent'
                 "
                 type="password"
                 v-model="store.user[key]"
@@ -159,7 +161,7 @@ const cancelChanges = () => {
       <div class="flex flex-1 items-center justify-center gap-5">
         <button
           :class="editing ? 'block' : 'pointer-events-none opacity-50'"
-          class="mt-10 rounded bg-green-500 py-2 px-4 font-bold text-white hover:bg-red-700"
+          class="mt-10 rounded bg-green-500 py-2 px-4 font-bold text-white hover:bg-green-700"
           @click="confrimChange()"
           type="submit"
         >
