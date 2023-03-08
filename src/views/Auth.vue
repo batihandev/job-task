@@ -26,7 +26,7 @@
         </div>
       </form>
     </div>
-    <div v-if="route.params.value === 'register'">
+    <div v-else-if="route.params.value === 'register'">
       <h1 class="form-title">Sign Up</h1>
       <form @submit="store.signup" class="form" novalidate>
         <div class="field">
