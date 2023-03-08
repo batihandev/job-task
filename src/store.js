@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useForm } from "vee-validate";
 import * as Yup from "yup";
 import router from "./router";
-const usersKey = "Taskzx";
+const usersKey = "NewList";
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
 
 const schema = Yup.object({
@@ -15,7 +15,7 @@ const schema = Yup.object({
     .oneOf([Yup.ref("password")], "Passwords must match"),
 });
 
-export const useSignupStore = defineStore("signup", () => {
+export const useValidateStore = defineStore("Validate", () => {
   const { errors, useFieldModel, handleSubmit } = useForm({
     validationSchema: schema,
   });
@@ -33,6 +33,7 @@ export const useSignupStore = defineStore("signup", () => {
       username: values.username,
       name: values.name,
       surname: values.surname,
+      id: 0,
       //please dont do this in real projects
       password: values.password,
     };
@@ -93,6 +94,19 @@ export const useAuthStore = defineStore("auth", {
       } else {
         this.authenticated = false;
       }
+    },
+    editUser({ username, name, surname, password }) {
+      const user = JSON.parse(localStorage.getItem("user"));
+      user.username = username;
+      user.name = name;
+      user.surname = surname;
+      user.password = password;
+      const users = JSON.parse(localStorage.getItem(usersKey));
+      const index = users.findIndex((x) => x.id === user.id);
+      users[index] = user;
+      localStorage.setItem(usersKey, JSON.stringify(users));
+      localStorage.setItem("user", JSON.stringify(user));
+      this.user = user;
     },
   },
 });

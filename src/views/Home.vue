@@ -32,6 +32,11 @@ const Auth = (value) => {
       class="flex flex-col items-center justify-center space-y-4 py-5"
     >
       <h1 class="form-title">Welcome {{ store.user.name }}</h1>
+      <p
+        class="max-w-sm px-5 text-center text-sm text-gray-500 md:px-0 md:text-base"
+      >
+        This is home page when you are logged in.
+      </p>
     </div>
   </main>
 </template>

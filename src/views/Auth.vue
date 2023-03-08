@@ -87,10 +87,10 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { useSignupStore } from "../store";
+import { useValidateStore } from "../store";
 import { useAuthStore } from "../store";
 import NotFound from "./NotFound.vue";
 const authStore = useAuthStore();
-const store = useSignupStore();
+const store = useValidateStore();
 const route = useRoute();
 </script>
