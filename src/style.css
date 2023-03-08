@@ -24,6 +24,6 @@
     @apply min-w-[150px];
   } */
   .form span {
-    @apply text-sm text-red-500;
+    @apply block h-5 text-sm text-red-500;
   }
 }

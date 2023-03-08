@@ -24,6 +24,9 @@
         <div class="field">
           <button type="submit">Sign In</button>
         </div>
+        <div>
+          <router-link to="/register">Don't have an account?</router-link>
+        </div>
       </form>
     </div>
     <div v-else-if="route.params.value === 'register'">
@@ -70,6 +73,9 @@
         </div>
         <div>
           <button type="submit">Sign Up</button>
+        </div>
+        <div>
+          <router-link to="/login">Already have an account?</router-link>
         </div>
       </form>
     </div>
