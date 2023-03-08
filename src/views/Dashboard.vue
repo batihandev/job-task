@@ -5,6 +5,7 @@ import { CheckCircleIcon } from "@heroicons/vue/outline";
 import { useValidateStore } from "../store";
 import { ref } from "vue";
 const store = useAuthStore();
+const inputRef = ref(null);
 const validateStore = useValidateStore();
 const editing = ref(false);
 const keyRemmember = ref("");
@@ -77,6 +78,18 @@ const cancelChanges = () => {
   delete store.user.confirmpassword;
 };
 </script>
+<script>
+export default {
+  methods: {
+    focusInput(key) {
+      console.log(this.$refs, key);
+      this.$refs[key][0].focus();
+      this.$refs[key][0].select();
+      console.log(this.$refs[key]);
+    },
+  },
+};
+</script>
 
 <template>
   <main class="flex flex-col items-center justify-center">
@@ -84,10 +97,12 @@ const cancelChanges = () => {
       Welcome {{ userref.username }}, {{ userref.name }} {{ userref.surname }}
     </h1>
     <form @submit.prevent class="flex flex-col items-center justify-center">
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div
+        class="grid border-spacing-1 grid-cols-1 rounded border-2 border-blue-500 border-opacity-25 bg-sky-200 px-5 py-2 sm:grid-cols-2"
+      >
         <div v-for="(values, key) in store.user">
-          <div class="flex flex-col">
-            <label :for="key" class="relative font-medium text-gray-700"
+          <div class="flex flex-col p-2">
+            <label :for="key" class="relative px-2 font-medium text-gray-700"
               >{{
                 key.toString().charAt(0).toUpperCase() + key.toString().slice(1)
               }}
@@ -97,8 +112,8 @@ const cancelChanges = () => {
                 :class="key === keyRemmember ? 'hidden' : 'block'"
               >
                 <PencilAltIcon
-                  @click="inputEnable(key)"
-                  class="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-400 transition-colors duration-200 hover:text-gray-800"
+                  @click="inputEnable(key), focusInput.bind(this, key)()"
+                  class="absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-red-400 transition-colors duration-200 hover:text-red-800"
                 />
               </div>
               <div
@@ -108,12 +123,13 @@ const cancelChanges = () => {
               >
                 <CheckCircleIcon
                   @click="confrimChange()"
-                  class="absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-green-600 transition-colors duration-200 hover:text-green-800"
+                  class="absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer text-green-600 transition-colors duration-200 hover:text-green-800"
                 />
               </div>
             </label>
             <div class="relative">
               <input
+                :ref="key"
                 @input="onChange(key)"
                 v-if="
                   key !== 'id' &&
@@ -121,35 +137,36 @@ const cancelChanges = () => {
                   key !== 'token' &&
                   key !== 'confirmpassword'
                 "
-                class="mr-4 mb-2 rounded text-lg"
+                class="border-b border-sky-300 p-2 text-lg"
                 :class="
                   key === keyRemmember
-                    ? 'border border-blue-500 border-opacity-25 bg-red-300  '
-                    : 'pointer-events-none cursor-none border border-transparent bg-transparent'
+                    ? 'rounded border border-blue-500 border-opacity-25 bg-red-300  bg-opacity-50'
+                    : 'pointer-events-none cursor-none  bg-transparent'
                 "
                 type="text"
                 v-model="store.user[key]"
               />
               <input
+                :ref="key"
                 @input="onChange(key)"
                 v-else
-                class="mr-4 rounded text-lg"
+                class="border border-b border-transparent border-b-sky-300 p-2 text-lg"
                 :class="
                   key === keyRemmember || key === 'confirmpassword'
-                    ? 'border border-blue-500 border-opacity-25 bg-red-300 bg-opacity-40'
-                    : 'pointer-events-none cursor-none border border-transparent bg-transparent'
+                    ? 'rounded border border-blue-500 border-opacity-25 bg-red-300 bg-opacity-50'
+                    : 'pointer-events-none cursor-none  bg-transparent'
                 "
                 type="password"
                 v-model="store.user[key]"
               />
               <div class="h-5 w-[200px]">
                 <span
-                  class="block text-xs text-red-500"
+                  class="block whitespace-nowrap p-1 text-xs text-red-500"
                   v-if="key === keyRemmember"
                   >{{ validateStore.errors[key] }}</span
                 >
                 <span
-                  class="block text-xs text-red-500"
+                  class="block whitespace-nowrap p-1 text-xs text-red-500"
                   v-if="key === 'confirmpassword'"
                   >{{ validateStore.errors["confirmPassword"] }}</span
                 >
